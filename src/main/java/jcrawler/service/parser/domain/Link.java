@@ -26,10 +26,6 @@ public class Link {
         return uri;
     }
 
-    protected void setUri(URI uri) throws URISyntaxException {
-        this.uri = new URI(uri.toString());
-    }
-
     public int hashCode() {
         return uri.hashCode();
     }
