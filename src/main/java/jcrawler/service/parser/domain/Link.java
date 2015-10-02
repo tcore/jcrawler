@@ -18,6 +18,10 @@ public class Link {
         this.uri = new URI(uri);
     }
 
+    public String toString() {
+        return uri.toString();
+    }
+
     public String getText() {
         return text;
     }
