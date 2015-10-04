@@ -16,6 +16,10 @@ public class Site {
     @OneToMany(targetEntity = Page.class, mappedBy = "site")
     private Set<Page> pages = new HashSet<>();
 
+    public String toString() {
+        return "http://" + host;
+    }
+
     public Long getId() {
         return id;
     }

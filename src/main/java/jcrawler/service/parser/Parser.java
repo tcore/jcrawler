@@ -1,6 +1,7 @@
 package jcrawler.service.parser;
 
 import jcrawler.service.parser.domain.Link;
+import jcrawler.service.parser.domain.Page;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,9 +3,9 @@ package jcrawler.service;
 import jcrawler.service.fetcher.FetcherImpl;
 import jcrawler.service.fetcher.FetcherRequest;
 import jcrawler.service.fetcher.FetcherResponse;
-import jcrawler.service.parser.Page;
 import jcrawler.service.parser.Parser;
 import jcrawler.service.parser.domain.Link;
+import jcrawler.service.parser.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
@@ -20,6 +20,10 @@ public class Crawler {
 
     @Autowired
     Parser parser;
+
+    public Set<Link> getLinks(jcrawler.domain.Page page) throws IOException, URISyntaxException {
+        return getLinks(page.toString());
+    }
 
     public Set<Link> getLinks(String url) throws URISyntaxException, IOException {
         return getLinks(new URI(url));
