@@ -1,9 +1,14 @@
 package jcrawler.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity(name = "page")
+@Getter
+@Setter
 public class Page {
     @Id
     @GeneratedValue
@@ -28,45 +33,5 @@ public class Page {
         }
 
         return site.toString();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public Site getSite() {
-        return site;
-    }
-
-    public void setSite(Site site) {
-        this.site = site;
-    }
-
-    public Date getDateLastParsed() {
-        return dateLastParsed;
-    }
-
-    public void setDateLastParsed(Date dateLastParsed) {
-        this.dateLastParsed = dateLastParsed;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
     }
 }

@@ -2,6 +2,7 @@ package jcrawler.service.parser;
 
 import jcrawler.service.parser.domain.Link;
 import jcrawler.service.parser.domain.Page;
+import jcrawler.service.parser.exception.NotValidUriException;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-public class Parser implements ParserInterface {
+public class Parser {
     @Autowired
     public URIService uriService;
 
@@ -20,13 +21,13 @@ public class Parser implements ParserInterface {
         Set<Link> list = new HashSet<>();
         for (Element e : links) {
             try {
-                Link link = new Link(e.text(), uriService.normalize(e.attr("abs:href")));
+                String href = e.attr("abs:href");
+                Link link = new Link(e.text(), uriService.normalize(href));
                 if (!list.contains(link)) {
                     list.add(link);
                 }
-            } catch (URISyntaxException e1) {
-                // TODO: save to logs
-                e1.printStackTrace();
+            } catch (NotValidUriException |URISyntaxException ex) {
+                System.err.println(ex.toString());
             }
         }
 

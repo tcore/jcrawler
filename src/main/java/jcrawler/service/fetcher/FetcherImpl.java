@@ -22,15 +22,21 @@ public class FetcherImpl implements FetcherInterface {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet get = new HttpGet(request.getUri());
         CloseableHttpResponse response = httpClient.execute(get);
+        try {
+            FetcherResponse fetcherResponse = new FetcherResponse();
+            HttpEntity entity = response.getEntity();
+            if (entity == null) {
+                fetcherResponse.setContent("");
 
-        FetcherResponse fetcherResponse = new FetcherResponse();
-        HttpEntity entity = response.getEntity();
-        fetcherResponse.setContent(IOUtils.toString(entity.getContent()));
-        EntityUtils.consume(entity);
+                return fetcherResponse;
+            }
+            fetcherResponse.setContent(IOUtils.toString(entity.getContent()));
 
-        response.close();
-        httpClient.close();
-
-        return fetcherResponse;
+            return fetcherResponse;
+        } finally {
+            EntityUtils.consume(response.getEntity());
+            response.close();
+            httpClient.close();
+        }
     }
 }

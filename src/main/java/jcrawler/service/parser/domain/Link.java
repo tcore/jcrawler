@@ -1,11 +1,14 @@
 package jcrawler.service.parser.domain;
 
+import lombok.Getter;
+
 import java.net.URI;
-import java.net.URISyntaxException;
 
 public class Link {
+    @Getter
     private String text;
 
+    @Getter
     private URI uri;
 
     public Link(String text, URI uri) {
@@ -13,21 +16,8 @@ public class Link {
         this.uri = uri;
     }
 
-    public Link(String text, String uri) throws URISyntaxException {
-        this.text = text;
-        this.uri = new URI(uri);
-    }
-
     public String toString() {
         return uri.toString();
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public URI getUri() {
-        return uri;
     }
 
     public int hashCode() {

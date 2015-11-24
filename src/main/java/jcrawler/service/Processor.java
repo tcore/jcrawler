@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.Set;
 
@@ -24,32 +25,37 @@ public class Processor {
     @Autowired
     SiteRepository siteRepository;
 
-    public int process(Page page) throws IOException, URISyntaxException {
-        Set<Link> links = crawler.getLinks(page);
+    public int process(Page page) {
         int countNew = 0;
-        for (Link l : links) {
-            String foundHost = l.getUri().getHost();
-            String foundPath = l.getUri().getPath();
-            if (foundPath.equals("")) {
-                foundPath = null;
+
+        try {
+            Set<Link> links = crawler.getLinks(page);
+            for (Link l : links) {
+                String foundHost = l.getUri().getHost();
+                String foundPath = l.getUri().getPath();
+                if (foundPath.equals("")) {
+                    foundPath = null;
+                }
+                Site site = siteRepository.findByHost(foundHost);
+                Page foundPage = null;
+                if (site == null) {
+                    site = new Site();
+                    site.setHost(foundHost);
+                } else {
+                    foundPage = pageRepository.findBySiteAndPath(site, foundPath);
+                }
+                if (foundPage == null) {
+                    foundPage = new Page();
+                    foundPage.setDateCreated(new Date());
+                    foundPage.setPath(foundPath);
+                    foundPage.setSite(site);
+                    siteRepository.save(site);
+                    pageRepository.save(foundPage);
+                    countNew++;
+                }
             }
-            Site site = siteRepository.findByHost(foundHost);
-            Page foundPage = null;
-            if (site == null) {
-                site = new Site();
-                site.setHost(foundHost);
-            } else {
-                foundPage = pageRepository.findBySiteAndPath(site, foundPath);
-            }
-            if (foundPage == null) {
-                foundPage = new Page();
-                foundPage.setDateCreated(new Date());
-                foundPage.setPath(foundPath);
-                foundPage.setSite(site);
-                siteRepository.save(site);
-                pageRepository.save(foundPage);
-                countNew++;
-            }
+        } catch (Exception e) {
+            System.err.print(e.getMessage());
         }
 
         page.setDateLastParsed(new Date());

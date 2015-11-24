@@ -1,10 +1,15 @@
 package jcrawler.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "site")
+@Getter
+@Setter
 public class Site {
     @Id
     @GeneratedValue
@@ -18,29 +23,5 @@ public class Site {
 
     public String toString() {
         return "http://" + host;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public Set<Page> getPages() {
-        return pages;
-    }
-
-    public void setPages(Set<Page> pages) {
-        this.pages = pages;
     }
 }
